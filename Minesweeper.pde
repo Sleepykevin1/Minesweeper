@@ -4,6 +4,7 @@ private static final int NUM_ROWS = 20;
 private static final int NUM_COLS = 20;
 private MSButton[][] buttons;
 private ArrayList<MSButton> mines;
+private boolean gameOver = false;
 
 void setup() {
     size(400, 400);
@@ -35,7 +36,9 @@ public void setMines() {
 
 public void draw() {
     background(0);
-    if (isWon()) {
+    if (gameOver) {
+        displayLosingMessage();
+    } else if (isWon()) {
         displayWinningMessage();
     }
 }
@@ -98,10 +101,10 @@ public class MSButton {
     }
 
     public void mousePressed() {
-        if (!clicked) {
+        if (!clicked && !gameOver) {
             clicked = true;
             if (mines.contains(this)) {
-                displayLosingMessage();
+                gameOver = true;
             } else {
                 int mineCount = countMines(myRow, myCol);
                 if (mineCount > 0) {
@@ -146,6 +149,3 @@ public class MSButton {
         return flagged;
     }
 }
-
-
-
